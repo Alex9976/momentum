@@ -1,3 +1,6 @@
+const moment = require("moment");
+moment.locale('ru');
+
 const time = document.querySelector(".time"),
   greeting = document.querySelector(".greeting"),
   name = document.querySelector(".name"),
@@ -7,46 +10,25 @@ const time = document.querySelector(".time"),
   bgChange = document.querySelector(".bg-change"),
   openModal = document.querySelector(".bg-view");
 
-const dayOfWeek = [
-  "Воскресенье",
-  "Понедельник",
-  "Вторник",
-  "Среда",
-  "Четверг",
-  "Пятница",
-  "Суббота",
-];
-const month = [
-  "января",
-  "февряля",
-  "марта",
-  "апреля",
-  "мая",
-  "июня",
-  "июля",
-  "августа",
-  "сентября",
-  "октября",
-  "ноября",
-  "декабря",
-];
+const dayTime = ["morning", "afternoon", "evening", "night"];
+const numberOfImages = 30;
+
 let bufferFocus, bufferName;
+
 let images = new Array(4);
-let loadImages = 0;
+for (let i = 0; i < 4; i++) {
+  images[i] = new Array(6);
+}
+
 let buffHour = -1;
 
 function showTime() {
   let today = new Date(),
     hour = today.getHours(),
     min = today.getMinutes(),
-    sec = today.getSeconds(),
-    dayOF = today.getDay(),
-    date = today.getDate(),
-    currentMonth = today.getMonth();
-
-  time.innerHTML = `${dayOfWeek[dayOF]}, ${date} ${
-    month[currentMonth]
-  }<br>${hour}<span>:</span>${addZero(min)}<span>:</span>${addZero(sec)}`;
+    sec = today.getSeconds();
+  
+  time.innerHTML = `${capitalizeFirstLetter(moment().format('dddd'))}, ${moment().format('D MMMM')}<br>${addZero(hour)}<span>:</span>${addZero(min)}<span>:</span>${addZero(sec)}`;
   setTimeout(showTime, 1000);
 }
 
@@ -73,13 +55,13 @@ function setBg() {
     hour = today.getHours();
   let image = new Image();
   if (hour >= 6 && hour < 12) {
-    image.src = images[0]["value"][6 - (12 - hour)]["contentUrl"];
+    image.src = "./assets/images/" + dayTime[0] + "/" + images[0][6 - (12 - hour)] + ".jpg";
   } else if (hour >= 12 && hour < 18) {
-    image.src = images[1]["value"][6 - (18 - hour)]["contentUrl"];
+    image.src = "./assets/images/" + dayTime[1] + "/" + images[1][6 - (18 - hour)] + ".jpg";
   } else if (hour >= 18 && hour < 24) {
-    image.src = images[2]["value"][6 - (24 - hour)]["contentUrl"];
+    image.src = "./assets/images/" + dayTime[2] + "/" + images[2][6 - (24 - hour)] + ".jpg";
   } else {
-    image.src = images[3]["value"][6 - (6 - hour)]["contentUrl"];
+    image.src = "./assets/images/" + dayTime[3] + "/" +  images[3][6 - (6 - hour)] + ".jpg";
   }
   image.onload = function () {
     document.body.style.backgroundImage = `url('${image.src}')`;
@@ -87,42 +69,15 @@ function setBg() {
 }
 
 function getPhotos(imagses) {
-  var request = new XMLHttpRequest();
-  let query = ["morning", "afternoon", "evening", "night"];
-  request.responseType = "json";
-  request.open(
-    "GET",
-    `https://api.bing.microsoft.com/v7.0/images/search?q=${
-      query[loadImages]
-    } nature&count=6&imageType=Photo&offset=${Math.floor(
-      Math.random() * 1000
-    )}&maxWidth=1920&maxHeight=1080&minWidth=1600&minHeight=900`,
-    true
-  );
-  request.setRequestHeader(
-    "Ocp-Apim-Subscription-Key",
-    "token"
-  );
-  request.send();
-
-  request.onload = function () {
-    if (request.status != 200) {
-      getPhotos();
-    } else {
-      imagses[loadImages] = request.response;
-      loadImages++;
-      if (loadImages == 4) {
-        setBg();
-        addImagesToModal();
-      } else {
-        getPhotos(imagses);
-      }
+  for (let i = 0; i < 4; i++)
+  {
+    for (let j = 0; j < 6; j++)
+    {
+      images[i][j] = Math.floor(Math.random() * (numberOfImages - 1)) + 1;
     }
-  };
-
-  request.onerror = function () {
-    getPhotos();
-  };
+  }
+  setBg();
+  addImagesToModal();
 }
 
 function getName() {
@@ -200,10 +155,6 @@ function nameOnClick(e) {
   name.textContent = "";
 }
 
-function changeImage() {
-  console.log("");
-}
-
 function setQuote() {
   var request = new XMLHttpRequest();
   request.open("GET", "https://api.adviceslip.com/advice", true);
@@ -225,7 +176,6 @@ function setQuote() {
 }
 
 function refreshBG() {
-  loadImages = 0;
   getPhotos(images);
 }
 
@@ -234,7 +184,7 @@ function updateBg() {
     hour = today.getHours();
   if (hour == -1) {
     buffHour = hour;
-  } else if (hour != buffHour && loadImages == 4) {
+  } else if (hour != buffHour) {
     setBg();
     setGreet();
     buffHour = hour;
@@ -259,34 +209,58 @@ function generateModal() {
   document.body.append(mwindow);
 
   document.getElementsByClassName("close")[0].onclick = function () {
-    document.getElementById("modal-window").style.display = "none";
+    document.getElementById("modal-window").className = "modal-hide";
     document.getElementsByTagName("body")[0].style.overflow = "visible";
+    changeClass();
   };
 
   openModal.onclick = function () {
-    document.getElementById("modal-window").style.display = "block";
+    document.getElementById("modal-window").className = "modal-visible";
     document.getElementsByTagName("body")[0].style.overflow = "hidden";
   };
 
   window.onclick = function (event) {
     if (event.target == document.getElementById("modal-window")) {
-      document.getElementById("modal-window").style.display = "none";
+      document.getElementById("modal-window").className = "modal-hide";
       document.getElementsByTagName("body")[0].style.overflow = "visible";
+      changeClass();
     }
   };
+}
+
+async function changeClass() {
+  await sleep(550);
+  document.getElementById("modal-window").className = "modal";
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 function addImagesToModal() {
   let modal = document.querySelector(".modal-main-content");
   let content = "";
   for (let i = 0; i < 4; i++) {
-    for (let j = 0; j < images[i]["value"].length; j++) {
-      let image = new Image();
-      image.src = images[i]["value"][j]["contentUrl"];
-      content = content + `<img src="${image.src}" width="600px"></img>`;
+    for (let j = 0; j < 6; j++) {     
+      content = content + `<img src="./assets/images/` + dayTime[i] + `/` + images[i][j] + `.jpg" width="600px"></img>`;    
     }
   }
   modal.innerHTML = content;
+}
+
+document.onkeydown = function(evt) {
+    evt = evt || window.event;
+  if (evt.keyCode == 27) {
+    if (document.getElementById("modal-window").className != "modal-hide" && document.getElementById("modal-window").className != "modal" ) {
+      document.getElementById("modal-window").className = "modal-hide";
+      document.body.style.overflow = "visible";
+      changeClass();
+    }
+  }
+};
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 name.addEventListener("keypress", setName);
@@ -295,10 +269,10 @@ name.addEventListener("click", nameOnClick);
 focus.addEventListener("keypress", setFocus);
 focus.addEventListener("blur", setFocus);
 focus.addEventListener("click", focusOnClick);
-time.addEventListener("onchange", changeImage);
 quoteChange.addEventListener("click", setQuote);
 bgChange.addEventListener("click", refreshBG);
 
+generateModal();
 getPhotos(images);
 showTime();
 setGreet();
@@ -306,4 +280,4 @@ setQuote();
 getName();
 getFocus();
 updateBg();
-generateModal();
+
