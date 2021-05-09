@@ -5,16 +5,17 @@ const time = document.querySelector(".time"),
   greeting = document.querySelector(".greeting"),
   name = document.querySelector(".name"),
   focus = document.querySelector(".focus"),
+  city = document.querySelector(".city"),
   quote = document.querySelector(".quote"),
   quoteChange = document.querySelector(".quote-change"),
   bgChange = document.querySelector(".bg-change"),
   openModal = document.querySelector(".bg-view");
 
+const weatherAPI = "94dc1074110348afc7eaa29770732d95";
 const dayTime = ["morning", "afternoon", "evening", "night"];
 const numberOfImages = 30;
 
-let bufferFocus, bufferName;
-
+let bufferFocus, bufferName, bufferCity;
 let images = new Array(4);
 for (let i = 0; i < 4; i++) {
   images[i] = new Array(6);
@@ -263,12 +264,107 @@ function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+function getWeatherForecast() {
+  var request = new XMLHttpRequest();
+  request.open("GET", `https://api.openweathermap.org/data/2.5/weather?q=${localStorage.getItem('city')}&lang=ru&appid=${weatherAPI}&units=metric`, true);
+  request.responseType = "json";
+  request.send();
+
+  request.onload = function () {
+    if (request.status != 200 && request.status != 404) {
+      try
+      {
+        document.getElementById("weather").remove();
+      }
+      finally
+      {
+        getWeatherForecast();       
+      }
+      
+    } else if (request.status == 404)
+    {
+      try
+      {
+        document.getElementById("weather").remove();
+      }
+      catch { }
+    }
+    else {
+      setWeather(request.response);
+    }
+  };
+
+  request.onerror = function () {
+    getWeatherForecast();
+  };
+}
+
+function setWeather(response)
+{
+  console.log(response);
+  let weather = document.createElement('div');
+  weather.className = "weather";
+  weather.id = "weather";
+  weather.innerHTML = `<span><img class="weather-img" src="http://openweathermap.org/img/wn/${response['weather'][0]['icon']}.png">${Math.round(response['main']['temp'])}&deg;<br>${capitalizeFirstLetter(response['weather'][0]['description'])}</span>`;
+  try
+  {
+    document.getElementById("weather").remove();
+  }
+  finally
+  {
+    city.after(weather);
+  }
+  setTimeout(getWeatherForecast, 1000 * 3600);
+}
+
+function getCity() {
+  if (
+    localStorage.getItem("city") === null ||
+    localStorage.getItem("city") == ""
+  ) {
+    city.textContent = "Введите город";
+  } else {
+    city.textContent = localStorage.getItem("city");
+  }
+}
+
+function setCity(e) {
+  if (e.type === "keypress") {
+    if (e.which == 13 || e.keyCode == 13) {
+      if (e.target.innerText.length == "") {
+        localStorage.setItem("city", bufferCity);
+        city.textContent = bufferCity;
+      } else {
+        localStorage.setItem("city", e.target.innerText);
+      }
+      city.blur();
+      getWeatherForecast();
+    }  
+  } else {
+    if (e.target.innerText == "") {
+      localStorage.setItem("city", bufferCity);
+      city.textContent = bufferCity;
+    } else {
+      localStorage.setItem("city", e.target.innerText);
+    }
+    getWeatherForecast();
+  }
+}
+
+function cityOnClick(e) {
+  bufferCity = city.textContent;
+  city.textContent = "";
+}
+
 name.addEventListener("keypress", setName);
 name.addEventListener("blur", setName);
 name.addEventListener("click", nameOnClick);
 focus.addEventListener("keypress", setFocus);
 focus.addEventListener("blur", setFocus);
 focus.addEventListener("click", focusOnClick);
+city.addEventListener("keypress", setCity);
+city.addEventListener("blur", setCity);
+city.addEventListener("click", cityOnClick);
 quoteChange.addEventListener("click", setQuote);
 bgChange.addEventListener("click", refreshBG);
 
@@ -279,5 +375,6 @@ setGreet();
 setQuote();
 getName();
 getFocus();
+getCity();
 updateBg();
-
+getWeatherForecast();

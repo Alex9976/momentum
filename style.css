@@ -140,6 +140,27 @@ h2 {
   background-color: rgba(0, 0, 0, 0.4);
 }
 
+.city {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  font-size: 1.6rem;
+}
+
+.weather {
+  position: absolute;
+  right: 10px;
+  top: 40px;
+  font-size: 1.5rem;
+  text-align: right;
+}
+
+.weather-img {
+  width: 50px;
+  height: 50px;
+  margin-bottom: -15px;
+}
+
 @keyframes visible {
  from {
    opacity: 0;
@@ -240,4 +261,26 @@ h2 {
   h2 {
     font-size: 1.1rem;
   }
+
+  .city {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  font-size: 1.2rem;
 }
+
+.weather {
+  position: absolute;
+  right: 10px;
+  top: 27px;
+  font-size: 1.1rem;
+  text-align: right;
+}
+
+.weather-img {
+  width: 40px;
+  height: 40px;
+  margin-bottom: -10px;
+}
+}
+
