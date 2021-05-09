@@ -240,10 +240,12 @@ function updateBg()
   if (hour == -1)
   {
     buffHour = hour;
-  } else if (hour != buffHour)
+  }
+  else if (hour != buffHour)
   {
     setBg();
     setGreet();
+    addImagesToModal();
     buffHour = hour;
   }
   setTimeout(updateBg, 1000 * 30);
@@ -303,12 +305,48 @@ function sleep(ms)
 
 function addImagesToModal()
 {
+  let today = new Date(), hour = today.getHours();
   let modal = document.querySelector(".modal-main-content");
   let content = "";
-  for (let i = 0; i < 4; i++)
+  let starti, startj, i, j;
+  if (hour >= 6 && hour < 12)
   {
-    for (let j = 0; j < 6; j++)
+    starti = 0;
+    startj = 6 - (12 - hour);
+  }
+  else if (hour >= 12 && hour < 18)
+  {
+    starti = 1;
+    startj = 6 - (18 - hour)
+  }
+  else if (hour >= 18 && hour < 24)
+  {
+    starti = 2;
+    startj = 6 - (24 - hour);
+  }
+  else
+  {
+    starti = 3;
+    startj = 6 - (6 - hour);
+  }
+  j = startj;
+  i = starti;
+  for (i; i < 4; i++)
+  {
+    for (j; j < 6; j++)
     {
+      content = content + `<img src="./assets/images/` + dayTime[i] + `/` + images[i][j] + `.jpg" width="600px"></img>`;    
+    }
+    j = 0;
+  }
+  for (i = 0; i <= starti; i++)
+  {
+    for (j = 0; j < 6; j++)
+    {
+      if (j == startj && i == starti)
+      {
+        break;
+      }
       content = content + `<img src="./assets/images/` + dayTime[i] + `/` + images[i][j] + `.jpg" width="600px"></img>`;    
     }
   }
