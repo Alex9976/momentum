@@ -91,11 +91,20 @@ function setBg() {
 
 function getPhotos(imagses)
 {
+  let randomNum;
   for (let i = 0; i < 4; i++)
   {
     for (let j = 0; j < 6; j++)
-    {
-      images[i][j] = Math.floor(Math.random() * (numberOfImages - 1)) + 1;
+    {     
+      while (true)
+      {
+        randomNum = Math.floor(Math.random() * (numberOfImages - 1)) + 1;
+        if (images[i].find((x) => x == randomNum) != -1)
+        {
+          images[i][j] = randomNum;
+          break;
+        }    
+      }
     }
   }
   setBg();
