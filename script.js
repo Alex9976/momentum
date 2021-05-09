@@ -17,36 +17,47 @@ const numberOfImages = 30;
 
 let bufferFocus, bufferName, bufferCity;
 let images = new Array(4);
-for (let i = 0; i < 4; i++) {
+for (let i = 0; i < 4; i++)
+{
   images[i] = new Array(6);
 }
 
 let buffHour = -1;
 
-function showTime() {
+function showTime()
+{
   let today = new Date(),
     hour = today.getHours(),
     min = today.getMinutes(),
     sec = today.getSeconds();
-  
+
   time.innerHTML = `${capitalizeFirstLetter(moment().format('dddd'))}, ${moment().format('D MMMM')}<br>${addZero(hour)}<span>:</span>${addZero(min)}<span>:</span>${addZero(sec)}`;
   setTimeout(showTime, 1000);
 }
 
-function addZero(n) {
+function addZero(n)
+{
   return (parseInt(n, 10) < 10 ? "0" : "") + n;
 }
 
-function setGreet() {
+function setGreet()
+{
   let today = new Date(),
     hour = today.getHours();
-  if (hour >= 6 && hour < 12) {
+  if (hour >= 6 && hour < 12)
+  {
     greeting.textContent = "Доброе утро, ";
-  } else if (hour >= 12 && hour < 18) {
+  }
+  else if (hour >= 12 && hour < 18)
+  {
     greeting.textContent = "Добрый день, ";
-  } else if (hour >= 18 && hour < 24) {
+  }
+  else if (hour >= 18 && hour < 24)
+  {
     greeting.textContent = "Добрый вечер, ";
-  } else {
+  }
+  else
+  {
     greeting.textContent = "Доброй ночи, ";
   }
 }
@@ -55,21 +66,31 @@ function setBg() {
   let today = new Date(),
     hour = today.getHours();
   let image = new Image();
-  if (hour >= 6 && hour < 12) {
+
+  if (hour >= 6 && hour < 12)
+  {
     image.src = "./assets/images/" + dayTime[0] + "/" + images[0][6 - (12 - hour)] + ".jpg";
-  } else if (hour >= 12 && hour < 18) {
+  }
+  else if (hour >= 12 && hour < 18)
+  {
     image.src = "./assets/images/" + dayTime[1] + "/" + images[1][6 - (18 - hour)] + ".jpg";
-  } else if (hour >= 18 && hour < 24) {
+  }
+  else if (hour >= 18 && hour < 24)
+  {
     image.src = "./assets/images/" + dayTime[2] + "/" + images[2][6 - (24 - hour)] + ".jpg";
-  } else {
+  }
+  else
+  {
     image.src = "./assets/images/" + dayTime[3] + "/" +  images[3][6 - (6 - hour)] + ".jpg";
   }
-  image.onload = function () {
+  image.onload = function()
+  {
     document.body.style.backgroundImage = `url('${image.src}')`;
   };
 }
 
-function getPhotos(imagses) {
+function getPhotos(imagses)
+{
   for (let i = 0; i < 4; i++)
   {
     for (let j = 0; j < 6; j++)
@@ -81,111 +102,146 @@ function getPhotos(imagses) {
   addImagesToModal();
 }
 
-function getName() {
-  if (
-    localStorage.getItem("name") === null ||
-    localStorage.getItem("name") == ""
-  ) {
+function getName()
+{
+  if (localStorage.getItem("name") === null || localStorage.getItem("name") == "")
+  {
     name.textContent = "Введите имя";
-  } else {
+  }
+  else
+  {
     name.textContent = localStorage.getItem("name");
   }
 }
 
-function setName(e) {
-  if (e.type === "keypress") {
-    if (e.which == 13 || e.keyCode == 13) {
-      if (e.target.innerText.length == "") {
+function setName(e)
+{
+  if (e.type === "keypress")
+  {
+    if (e.which == 13 || e.keyCode == 13)
+    {
+      if (e.target.innerText.length == "")
+      {
         localStorage.setItem("name", bufferName);
         name.textContent = bufferName;
-      } else {
+      }
+      else
+      {
         localStorage.setItem("name", e.target.innerText);
       }
       name.blur();
     }
-  } else {
-    if (e.target.innerText == "") {
+  }
+  else
+  {
+    if (e.target.innerText == "")
+    {
       localStorage.setItem("name", bufferName);
       name.textContent = bufferName;
-    } else {
+    }
+    else
+    {
       localStorage.setItem("name", e.target.innerText);
     }
   }
 }
 
-function getFocus() {
-  if (
-    localStorage.getItem("focus") === null ||
-    localStorage.getItem("focus") == ""
-  ) {
+function getFocus()
+{
+  if (localStorage.getItem("focus") === null || localStorage.getItem("focus") == "")
+  {
     focus.textContent = "Ваша задача";
-  } else {
+  }
+  else
+  {
     focus.textContent = localStorage.getItem("focus");
   }
 }
 
-function setFocus(e) {
-  if (e.type === "keypress") {
-    if (e.which == 13 || e.keyCode == 13) {
-      if (e.target.innerText.length == "") {
+function setFocus(e)
+{
+  if (e.type === "keypress")
+  {
+    if (e.which == 13 || e.keyCode == 13)
+    {
+      if (e.target.innerText.length == "")
+      {
         localStorage.setItem("focus", bufferFocus);
         focus.textContent = bufferFocus;
-      } else {
+      }
+      else
+      {
         localStorage.setItem("focus", e.target.innerText);
       }
-
       focus.blur();
     }
-  } else {
-    if (e.target.innerText == "") {
+  }
+  else
+  {
+    if (e.target.innerText == "")
+    {
       localStorage.setItem("focus", bufferFocus);
       focus.textContent = bufferFocus;
-    } else {
+    }
+    else
+    {
       localStorage.setItem("focus", e.target.innerText);
     }
   }
 }
 
-function focusOnClick(e) {
+function focusOnClick(e)
+{
   bufferFocus = focus.textContent;
   focus.textContent = "";
 }
 
-function nameOnClick(e) {
+function nameOnClick(e)
+{
   bufferName = name.textContent;
   name.textContent = "";
 }
 
-function setQuote() {
+function setQuote()
+{
   var request = new XMLHttpRequest();
   request.open("GET", "https://api.adviceslip.com/advice", true);
   request.responseType = "json";
   request.send();
 
-  request.onload = function () {
-    if (request.status != 200) {
+  request.onload = function ()
+  {
+    if (request.status != 200)
+    {
       setQuote();
-    } else {
+    }
+    else
+    {
       let responseObj = request.response;
       quote.textContent = responseObj["slip"]["advice"];
     }
   };
 
-  request.onerror = function () {
+  request.onerror = function()
+  {
     setQuote();
   };
 }
 
-function refreshBG() {
+function refreshBG()
+{
   getPhotos(images);
 }
 
-function updateBg() {
+function updateBg()
+{
   let today = new Date(),
     hour = today.getHours();
-  if (hour == -1) {
+  if (hour == -1)
+  {
     buffHour = hour;
-  } else if (hour != buffHour) {
+  } else if (hour != buffHour)
+  {
     setBg();
     setGreet();
     buffHour = hour;
@@ -193,7 +249,8 @@ function updateBg() {
   setTimeout(updateBg, 1000 * 30);
 }
 
-function generateModal() {
+function generateModal()
+{
   let mwindow = document.createElement("div");
   mwindow.id = "modal-window";
   mwindow.className = "modal";
@@ -209,19 +266,23 @@ function generateModal() {
   mwindow.append(mwindowContent);
   document.body.append(mwindow);
 
-  document.getElementsByClassName("close")[0].onclick = function () {
+  document.getElementsByClassName("close")[0].onclick = function ()
+  {
     document.getElementById("modal-window").className = "modal-hide";
     document.getElementsByTagName("body")[0].style.overflow = "visible";
     changeClass();
   };
 
-  openModal.onclick = function () {
+  openModal.onclick = function ()
+  {
     document.getElementById("modal-window").className = "modal-visible";
     document.getElementsByTagName("body")[0].style.overflow = "hidden";
   };
 
-  window.onclick = function (event) {
-    if (event.target == document.getElementById("modal-window")) {
+  window.onclick = function (event)
+  {
+    if (event.target == document.getElementById("modal-window"))
+    {
       document.getElementById("modal-window").className = "modal-hide";
       document.getElementsByTagName("body")[0].style.overflow = "visible";
       changeClass();
@@ -229,30 +290,38 @@ function generateModal() {
   };
 }
 
-async function changeClass() {
+async function changeClass()
+{
   await sleep(550);
   document.getElementById("modal-window").className = "modal";
 }
 
-function sleep(ms) {
+function sleep(ms)
+{
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function addImagesToModal() {
+function addImagesToModal()
+{
   let modal = document.querySelector(".modal-main-content");
   let content = "";
-  for (let i = 0; i < 4; i++) {
-    for (let j = 0; j < 6; j++) {     
+  for (let i = 0; i < 4; i++)
+  {
+    for (let j = 0; j < 6; j++)
+    {
       content = content + `<img src="./assets/images/` + dayTime[i] + `/` + images[i][j] + `.jpg" width="600px"></img>`;    
     }
   }
   modal.innerHTML = content;
 }
 
-document.onkeydown = function(evt) {
-    evt = evt || window.event;
-  if (evt.keyCode == 27) {
-    if (document.getElementById("modal-window").className != "modal-hide" && document.getElementById("modal-window").className != "modal" ) {
+document.onkeydown = function (evt)
+{
+  evt = evt || window.event;
+  if (evt.keyCode == 27)
+  {
+    if (document.getElementById("modal-window").className != "modal-hide" && document.getElementById("modal-window").className != "modal")
+    {
       document.getElementById("modal-window").className = "modal-hide";
       document.body.style.overflow = "visible";
       changeClass();
@@ -260,98 +329,110 @@ document.onkeydown = function(evt) {
   }
 };
 
-function capitalizeFirstLetter(string) {
+function capitalizeFirstLetter(string)
+{
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-function getWeatherForecast() {
+function getWeatherForecast()
+{
   var request = new XMLHttpRequest();
   request.open("GET", `https://api.openweathermap.org/data/2.5/weather?q=${localStorage.getItem('city')}&lang=ru&appid=${weatherAPI}&units=metric`, true);
   request.responseType = "json";
   request.send();
 
-  request.onload = function () {
-    if (request.status != 200 && request.status != 404) {
-      try
-      {
-        document.getElementById("weather").remove();
-      }
-      finally
-      {
-        getWeatherForecast();       
-      }
-      
-    } else if (request.status == 404)
+  request.onload = function ()
+  {
+    if (request.status != 200 && request.status != 404)
     {
-      try
+        if (document.getElementById("weather") != null)
+        {
+          document.getElementById("weather").remove();
+        }
+        getWeatherForecast();
+      
+    }
+    else if (request.status == 404)
+    {
+      if (document.getElementById("weather") != null)
       {
         document.getElementById("weather").remove();
       }
-      catch { }
     }
-    else {
+    else
+    {
       setWeather(request.response);
     }
   };
 
-  request.onerror = function () {
+  request.onerror = function ()
+  {
     getWeatherForecast();
   };
 }
 
 function setWeather(response)
 {
-  console.log(response);
   let weather = document.createElement('div');
   weather.className = "weather";
   weather.id = "weather";
   weather.innerHTML = `<span><img class="weather-img" src="http://openweathermap.org/img/wn/${response['weather'][0]['icon']}.png">${Math.round(response['main']['temp'])}&deg;<br>${capitalizeFirstLetter(response['weather'][0]['description'])}</span>`;
-  try
+  if (document.getElementById("weather") != null)
   {
     document.getElementById("weather").remove();
   }
-  finally
-  {
-    city.after(weather);
-  }
+  city.after(weather);
   setTimeout(getWeatherForecast, 1000 * 3600);
 }
 
-function getCity() {
-  if (
-    localStorage.getItem("city") === null ||
-    localStorage.getItem("city") == ""
-  ) {
+function getCity()
+{
+  if (localStorage.getItem("city") === null || localStorage.getItem("city") == "")
+  {
     city.textContent = "Введите город";
-  } else {
+  }
+  else
+  {
     city.textContent = localStorage.getItem("city");
   }
 }
 
-function setCity(e) {
-  if (e.type === "keypress") {
-    if (e.which == 13 || e.keyCode == 13) {
-      if (e.target.innerText.length == "") {
+function setCity(e)
+{
+  if (e.type === "keypress")
+  {
+    if (e.which == 13 || e.keyCode == 13)
+    {
+      if (e.target.innerText.length == "")
+      {
         localStorage.setItem("city", bufferCity);
         city.textContent = bufferCity;
-      } else {
+      }
+      else
+      {
         localStorage.setItem("city", e.target.innerText);
       }
       city.blur();
       getWeatherForecast();
     }  
-  } else {
-    if (e.target.innerText == "") {
+  }
+  else
+  {
+    if (e.target.innerText == "")
+    {
       localStorage.setItem("city", bufferCity);
       city.textContent = bufferCity;
-    } else {
+    }
+    else
+    {
       localStorage.setItem("city", e.target.innerText);
     }
     getWeatherForecast();
   }
 }
 
-function cityOnClick(e) {
+function cityOnClick(e)
+{
   bufferCity = city.textContent;
   city.textContent = "";
 }
