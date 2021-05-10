@@ -28,11 +28,20 @@ body {
 h1 {
   margin-top: 3rem;
   margin-bottom: 2rem;
+  max-width: 95%;
 }
 
 h2 {
   margin-bottom: 0.5rem;
   opacity: 0.9;
+}
+
+.focus {
+  max-width: 95%;
+}
+
+.name {
+  max-width: 5rem; 
 }
 
 .quote {
