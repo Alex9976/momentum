@@ -159,7 +159,7 @@ function getFocus()
 {
   if (localStorage.getItem("focus") === null || localStorage.getItem("focus") == "")
   {
-    focus.textContent = "Ваша задача";
+    focus.textContent = "Введите задачу";
   }
   else
   {
