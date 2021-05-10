@@ -99,7 +99,7 @@ function getPhotos(imagses)
       while (true)
       {
         randomNum = Math.floor(Math.random() * (numberOfImages - 1)) + 1;
-        if (images[i].find((x) => x == randomNum) != -1)
+        if (!images[i].includes(randomNum))
         {
           images[i][j] = randomNum;
           break;
