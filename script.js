@@ -13,7 +13,7 @@ const time = document.querySelector(".time"),
 
 const weatherAPI = "94dc1074110348afc7eaa29770732d95";
 const dayTime = ["morning", "afternoon", "evening", "night"];
-const numberOfImages = 30;
+const numberOfImages = 20;
 
 let bufferFocus, bufferName, bufferCity;
 let images = new Array(4);
@@ -89,7 +89,7 @@ function setBg() {
   };
 }
 
-function getPhotos(imagses)
+function getPhotos()
 {
   let randomNum;
   for (let i = 0; i < 4; i++)
@@ -171,7 +171,7 @@ function setFocus(e)
 {
   if (e.type === "keypress")
   {
-    if (e.which == 13 || e.keyCode == 13)
+    if (e.key === "Enter")
     {
       if (e.target.innerText.length == "")
       {
@@ -239,14 +239,14 @@ function setQuote()
 
 function refreshBG()
 {
-  getPhotos(images);
+  getPhotos();
 }
 
 function updateBg()
 {
   let today = new Date(),
     hour = today.getHours();
-  if (hour == -1)
+  if (buffHour == -1)
   {
     buffHour = hour;
   }
@@ -314,6 +314,11 @@ function sleep(ms)
 
 function addImagesToModal()
 {
+  if (document.getElementById("modal-window") != null)
+  {
+    document.getElementById("modal-window").remove();
+  }
+  generateModal();
   let today = new Date(), hour = today.getHours();
   let modal = document.querySelector(".modal-main-content");
   let content = "";
@@ -362,10 +367,10 @@ function addImagesToModal()
   modal.innerHTML = content;
 }
 
-document.onkeydown = function (evt)
+document.onkeydown = function (e)
 {
-  evt = evt || window.event;
-  if (evt.keyCode == 27)
+  e = e || window.event;
+  if (e.key === "Escape")
   {
     if (document.getElementById("modal-window").className != "modal-hide" && document.getElementById("modal-window").className != "modal")
     {
@@ -429,7 +434,7 @@ function setWeather(response)
     document.getElementById("weather").remove();
   }
   city.after(weather);
-  setTimeout(getWeatherForecast, 1000 * 3600);
+  setTimeout(getWeatherForecast, 1000 * 60 * 20);
 }
 
 function getCity()
@@ -448,7 +453,7 @@ function setCity(e)
 {
   if (e.type === "keypress")
   {
-    if (e.which == 13 || e.keyCode == 13)
+    if (e.key === "Enter")
     {
       if (e.target.innerText.length == "")
       {
@@ -496,8 +501,8 @@ city.addEventListener("click", cityOnClick);
 quoteChange.addEventListener("click", setQuote);
 bgChange.addEventListener("click", refreshBG);
 
-generateModal();
-getPhotos(images);
+
+getPhotos();
 showTime();
 setGreet();
 setQuote();

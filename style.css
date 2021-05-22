@@ -11,7 +11,7 @@ body {
   align-items: center;
   justify-content: center;
   text-align: center;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(1px);
   height: 100vh;
   background-size: cover;
   color: white;
@@ -58,7 +58,7 @@ h2 {
   left: 1rem;
   bottom: 1rem;
   cursor: pointer;
-  filter: invert(30%);
+  filter: invert(45%);
   transition: filter 0.3s ease-in-out;
 }
 .quote-change:hover {
@@ -74,7 +74,7 @@ h2 {
   top: 1rem;
   cursor: pointer;
   transition: filter 0.3s ease-in-out;
-  filter: invert(30%);
+  filter: invert(45%);
 }
 .bg-change:hover {
   transition: filter 0.3s ease-in-out;
@@ -89,7 +89,7 @@ h2 {
   top: 1rem;
   cursor: pointer;
   transition: filter 0.3s ease-in-out;
-  filter: invert(30%);
+  filter: invert(45%);
 }
 
 .bg-view:hover {
