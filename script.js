@@ -16,7 +16,7 @@ const dayTime = ["night", "morning", "afternoon", "evening"];
 const greet = ["Доброй ночи, ", "Доброе утро, ", "Добрый день, ", "Добрый вечер, "];
 const numberOfImages = 20;
 
-let bufferFocus, bufferName, bufferCity, bufferHour = -1;
+let bufferHour = -1;
 let images = new Array(24);
 
 function showTime() {
@@ -40,8 +40,7 @@ function setBg() {
   let image = new Image();
 
   image.src = "./assets/images/" + dayTime[Math.floor(hour / 6)] + "/" + images[hour] + ".jpg";
-  image.onload = function()
-  {
+  image.onload = function() {
     document.body.style.backgroundImage = `url('${image.src}')`;
   };
 }
@@ -70,7 +69,7 @@ function getName() {
 }
 
 function nameOnClick() {
-  bufferName = name.textContent;
+  localStorage.setItem("name", name.textContent);
   name.textContent = "";
 }
 
@@ -78,8 +77,7 @@ function setName(e) {
   if (e.type === "keypress") {
     if (e.key == "Enter") {
       if (e.target.innerText.length == "") {
-        localStorage.setItem("name", bufferName);
-        name.textContent = bufferName;
+        name.textContent = localStorage.getItem("name");
       } else {
         localStorage.setItem("name", e.target.innerText);
       }
@@ -87,8 +85,7 @@ function setName(e) {
     }
   } else {
     if (e.target.innerText == "") {
-      localStorage.setItem("name", bufferName);
-      name.textContent = bufferName;
+      name.textContent = localStorage.getItem("name");
     } else {
       localStorage.setItem("name", e.target.innerText);
     }
@@ -104,7 +101,7 @@ function getFocus() {
 }
 
 function focusOnClick() {
-  bufferFocus = focus.textContent;
+  localStorage.setItem("focus", focus.textContent);
   focus.textContent = "";
 }
 
@@ -112,8 +109,7 @@ function setFocus(e) {
   if (e.type === "keypress") {
     if (e.key === "Enter") {
       if (e.target.innerText.length == "") {
-        localStorage.setItem("focus", bufferFocus);
-        focus.textContent = bufferFocus;
+        focus.textContent = localStorage.getItem("focus");
       } else {
         localStorage.setItem("focus", e.target.innerText);
       }
@@ -121,8 +117,7 @@ function setFocus(e) {
     }
   } else {
     if (e.target.innerText == "") {
-      localStorage.setItem("focus", bufferFocus);
-      focus.textContent = bufferFocus;
+      focus.textContent = localStorage.getItem("focus");
     } else {
       localStorage.setItem("focus", e.target.innerText);
     }
@@ -206,7 +201,7 @@ function sleep(ms) {
 }
 
 function addImagesToModal() {
-  if (document.getElementById("modal-window") != null)  {
+  if (document.getElementById("modal-window") != null) {
     document.getElementById("modal-window").remove();
   }
   generateModal();
@@ -245,8 +240,7 @@ function getWeatherForecast() {
   request.responseType = "json";
   request.send();
 
-  request.onload = function ()
-  {
+  request.onload = function () {
     if (request.status != 200 && request.status != 404) {
         if (document.getElementById("weather") != null) {
           document.getElementById("weather").remove();
@@ -290,12 +284,16 @@ function getCity() {
   }
 }
 
+function cityOnClick() {
+  localStorage.setItem("city", city.textContent);
+  city.textContent = "";
+}
+
 function setCity(e) {
   if (e.type === "keypress") {
     if (e.key === "Enter") {
       if (e.target.innerText.length == "") {
-        localStorage.setItem("city", bufferCity);
-        city.textContent = bufferCity;
+        city.textContent = localStorage.getItem("city");
       } else {
         localStorage.setItem("city", e.target.innerText);
       }
@@ -304,18 +302,12 @@ function setCity(e) {
     }  
   } else {
     if (e.target.innerText == "") {
-      localStorage.setItem("city", bufferCity);
-      city.textContent = bufferCity;
+      city.textContent = localStorage.getItem("city");
     } else {
       localStorage.setItem("city", e.target.innerText);
     }
     getWeatherForecast();
   }
-}
-
-function cityOnClick() {
-  bufferCity = city.textContent;
-  city.textContent = "";
 }
 
 name.addEventListener("keypress", setName);
@@ -329,7 +321,6 @@ city.addEventListener("blur", setCity);
 city.addEventListener("click", cityOnClick);
 quoteChange.addEventListener("click", setQuote);
 bgChange.addEventListener("click", getPhotos);
-
 
 getPhotos();
 showTime();

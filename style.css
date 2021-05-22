@@ -58,7 +58,7 @@ h2 {
   left: 1rem;
   bottom: 1rem;
   cursor: pointer;
-  filter: invert(45%);
+  filter: invert(40%);
   transition: filter 0.3s ease-in-out;
 }
 .quote-change:hover {
@@ -74,7 +74,7 @@ h2 {
   top: 1rem;
   cursor: pointer;
   transition: filter 0.3s ease-in-out;
-  filter: invert(45%);
+  filter: invert(40%);
 }
 .bg-change:hover {
   transition: filter 0.3s ease-in-out;
@@ -89,7 +89,7 @@ h2 {
   top: 1rem;
   cursor: pointer;
   transition: filter 0.3s ease-in-out;
-  filter: invert(45%);
+  filter: invert(40%);
 }
 
 .bg-view:hover {
