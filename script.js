@@ -16,7 +16,7 @@ const dayTime = ["night", "morning", "afternoon", "evening"];
 const greet = ["Доброй ночи, ", "Доброе утро, ", "Добрый день, ", "Добрый вечер, "];
 const numberOfImages = 20;
 
-let bufferHour = -1;
+let bufferHour = -1, isUpdateBg = true;
 let images = new Array(24);
 
 function showTime() {
@@ -310,6 +310,17 @@ function setCity(e) {
   }
 }
 
+// Sets a timeout for updating the background in order to avoid abrupt 
+// change of the image when you quickly press the background update button
+async function updateBgButtonTimeout() {
+  if (isUpdateBg) {
+    isUpdateBg = false;
+    getPhotos();
+    await sleep(1000);
+    isUpdateBg = true;
+  }
+}
+
 name.addEventListener("keypress", setName);
 name.addEventListener("blur", setName);
 name.addEventListener("click", nameOnClick);
@@ -320,7 +331,7 @@ city.addEventListener("keypress", setCity);
 city.addEventListener("blur", setCity);
 city.addEventListener("click", cityOnClick);
 quoteChange.addEventListener("click", setQuote);
-bgChange.addEventListener("click", getPhotos);
+bgChange.addEventListener("click", updateBgButtonTimeout);
 
 getPhotos();
 showTime();
