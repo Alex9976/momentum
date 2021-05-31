@@ -58,6 +58,9 @@ function getPhotos() {
   }
   setBg();
   addImagesToModal();
+
+  bgChange.removeEventListener("click", getPhotos);
+  setTimeout(function() { bgChange.addEventListener("click", getPhotos); }, 1000);
 }
 
 function getName() {
@@ -75,7 +78,7 @@ function nameOnClick() {
 
 function setName(e) {
   if (e.type === "keypress") {
-    if (e.key == "Enter") {
+    if (e.key === "Enter") {
       if (e.target.innerText.length == "") {
         name.textContent = localStorage.getItem("name");
       } else {
@@ -310,17 +313,6 @@ function setCity(e) {
   }
 }
 
-// Sets a timeout for updating the background in order to avoid abrupt 
-// change of the image when you quickly press the background update button
-async function updateBgButtonTimeout() {
-  if (isUpdateBg) {
-    isUpdateBg = false;
-    getPhotos();
-    await sleep(1000);
-    isUpdateBg = true;
-  }
-}
-
 name.addEventListener("keypress", setName);
 name.addEventListener("blur", setName);
 name.addEventListener("click", nameOnClick);
@@ -331,7 +323,7 @@ city.addEventListener("keypress", setCity);
 city.addEventListener("blur", setCity);
 city.addEventListener("click", cityOnClick);
 quoteChange.addEventListener("click", setQuote);
-bgChange.addEventListener("click", updateBgButtonTimeout);
+bgChange.addEventListener("click", getPhotos);
 
 getPhotos();
 showTime();
